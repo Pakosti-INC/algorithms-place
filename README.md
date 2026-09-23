@@ -8,3 +8,9 @@
 ## запуск тестового сервера
 > fastapi dev backend/main.py 
 
+## Базовый user-flow
+> clck.ru/3W3rwC
+
+
+
+
