@@ -6,5 +6,5 @@
 > pip install -r requirements.txt
 
 ## запуск тестового сервера
-> fastapi dev backend/main.py 
+> py backend/main.py
 
