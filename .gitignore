@@ -1,7 +1,5 @@
-# shop/db.sqlite3
+
 __pycache__/
 .venv
-# shop/media
 .idea
-# shop/main/migrations/00*
 .env
