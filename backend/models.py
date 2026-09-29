@@ -57,7 +57,7 @@ class Test(Base):
     # relationship для получения всех проблем у  (problem.tests)
     problem: Mapped["Problem"] = relationship(back_populates="tests")
 
-class SubmissionStatus(enum.Enum):
+class SubmissionStatus(str, enum.Enum):
     PENDING = "Pending"
     ACCEPTED = "Accepted"
     WA = "Wrong Answer"
