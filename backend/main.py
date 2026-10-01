@@ -22,7 +22,7 @@ def get_submissions(id: int, db: Session = Depends(get_db)):
     return submission
 
 
-@app.post("/submissions/", response_model=SubmissionResponse)
+@app.post("/submissions", response_model=SubmissionResponse)
 def add_submission(item: SubmissionCreate, db: Session = Depends(get_db)):
     new_submission = Submission(
         input_code=item.input_code,
