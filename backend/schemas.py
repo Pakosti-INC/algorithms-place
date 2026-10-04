@@ -16,3 +16,17 @@ class SubmissionResponse(BaseModel):
     notes: str | None = None
     # строка ниже делает так, что Pydantic понимает объекты SQLAlchemy
     model_config = ConfigDict(from_attributes=True)
+
+class ProblemResponse(BaseModel):
+    id: int
+    title: str
+    description: str | None = None
+    difficulty: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+class ProblemCreate(BaseModel):
+    # ID создается базой данных самостоятельно
+    title: str
+    description: str | None = None
+    difficulty: str
