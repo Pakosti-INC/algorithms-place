@@ -1,9 +1,11 @@
 import uvicorn
 from fastapi import FastAPI, Depends, HTTPException, status
-from database import get_db
+
+from backend.dependencies import get_current_user
+from dependencies import get_db
 from schemas import *
 from sqlalchemy.orm import Session
-from models import Submission, Problem
+from models import Submission, Problem, User
 from sqlalchemy import select
 
 app = FastAPI()
@@ -11,6 +13,15 @@ app = FastAPI()
 @app.get("/")
 def status_check():
     return {"status": "API is online"}
+
+@app.get("/submissions/my", response_model=list[SubmissionResponse])
+def get_my_submissions(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    stmt = select(Submission).where(Submission.user_id == current_user.id)
+
+    submissions = db.scalars(stmt).all()
+
+    return submissions
+
 @app.get("/submissions/{id}", response_model=SubmissionResponse)
 def get_single_submission(id: int, db: Session = Depends(get_db)):
     stmt = select(Submission).where(Submission.id == id)

@@ -17,6 +17,10 @@ class Group(Base):
     # relationship для получения всех студентов группы (group.users)
     users: Mapped[list["User"]] = relationship(back_populates="group")
 
+class UsersRole(str, enum.Enum):
+    TEACHER = "Teacher"
+    STUDENT = "Student"
+    MODERATOR = "Moderator"
 
 class User(Base):
     __tablename__ = "users"
@@ -26,7 +30,7 @@ class User(Base):
     first_name: Mapped[str] = mapped_column(String(30))
     middle_name: Mapped[Optional[str]] = mapped_column(String(30), nullable=True)
     last_name: Mapped[str] = mapped_column(String(30))
-
+    role: Mapped[UsersRole] = mapped_column(Enum(UsersRole), default=UsersRole.STUDENT)
     #TODO Не забыть про добавление соли к хэшу!
     password_hash: Mapped[str] = mapped_column(Text)
     group_id: Mapped[int] = mapped_column(ForeignKey("groups.id"))
