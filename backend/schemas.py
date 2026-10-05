@@ -30,3 +30,7 @@ class ProblemCreate(BaseModel):
     title: str
     description: str | None = None
     difficulty: str
+    topic_id: int | None = None
+
+#TODO ручки(и схемы) для входа препода и студента должны быть разными, и схемы для них тоже,
+# ибо схема на вход студента будет учитывать group_id, а регистрация препода нет.

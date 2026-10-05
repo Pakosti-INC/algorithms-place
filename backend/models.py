@@ -18,9 +18,9 @@ class Group(Base):
     users: Mapped[list["User"]] = relationship(back_populates="group")
 
 class UsersRole(str, enum.Enum):
-    TEACHER = "Teacher"
-    STUDENT = "Student"
-    MODERATOR = "Moderator"
+    TEACHER = "TEACHER"
+    STUDENT = "STUDENT"
+    MODERATOR = "MODERATOR"
 
 class User(Base):
     __tablename__ = "users"
@@ -30,10 +30,10 @@ class User(Base):
     first_name: Mapped[str] = mapped_column(String(30))
     middle_name: Mapped[Optional[str]] = mapped_column(String(30), nullable=True)
     last_name: Mapped[str] = mapped_column(String(30))
-    role: Mapped[UsersRole] = mapped_column(Enum(UsersRole), default=UsersRole.STUDENT)
+    role: Mapped[UsersRole] = mapped_column(default=UsersRole.STUDENT)
     #TODO Не забыть про добавление соли к хэшу!
     password_hash: Mapped[str] = mapped_column(Text)
-    group_id: Mapped[int] = mapped_column(ForeignKey("groups.id"))
+    group_id: Mapped[int] = mapped_column(ForeignKey("groups.id"), nullable=True)
 
     # relationship для получения группы студента (user.group)
     group: Mapped["Group"] = relationship(back_populates="users")
@@ -66,10 +66,10 @@ class Test(Base):
     problem: Mapped["Problem"] = relationship(back_populates="tests")
 
 class SubmissionStatus(str, enum.Enum):
-    PENDING = "Pending"
-    ACCEPTED = "Accepted"
-    WA = "Wrong Answer"
-    TO = "Timeout"
+    PENDING = "PENDING"
+    ACCEPTED = "ACCEPTED"
+    WA = "WRONG ANSWER"
+    TO = "TIMEOUT"
 
 class Submission(Base):
     __tablename__ = "submissions"
@@ -94,7 +94,7 @@ class Review(Base):
     __tablename__ = "reviews"
 
     id: Mapped[int] = mapped_column(Integer , primary_key=True)
-    status: Mapped[ReviewStatus] = mapped_column(Enum(ReviewStatus))
+    status: Mapped[ReviewStatus] = mapped_column()
     comment: Mapped[str] = mapped_column(Text)
     submission_id: Mapped[int] = mapped_column(ForeignKey("submissions.id"))
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
@@ -105,6 +105,6 @@ class Topic(Base):
     id: Mapped[int] = mapped_column(Integer , primary_key=True)
     name: Mapped[str] = mapped_column(Text)
 
-    problems: Mapped[list["Problem"]] = relationship(back_populates="topic")
+    problem: Mapped[list["Problem"]] = relationship(back_populates="topic")
 
 
