@@ -41,9 +41,13 @@ class Problem(Base):
     title: Mapped[str] = mapped_column(String(120))
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     difficulty: Mapped[str] = mapped_column(String(30))
+    topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
 
     # relationship для получения всех тестов у проблемы (problem.tests)
     tests: Mapped[list["Test"]] = relationship(back_populates="problem")
+    # relationship для получения темы у проблемы (problem.topic)
+    topic: Mapped[list["Topic"]] = relationship(back_populates="problem")
+
 
 class Test(Base):
     __tablename__ = "tests"
@@ -91,6 +95,12 @@ class Review(Base):
     submission_id: Mapped[int] = mapped_column(ForeignKey("submissions.id"))
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
+class Topic(Base):
+    __tablename__ = "topics"
 
+    id: Mapped[int] = mapped_column(Integer , primary_key=True)
+    name: Mapped[str] = mapped_column(Text)
+
+    problems: Mapped[list["Problem"]] = relationship(back_populates="topic")
 
 
