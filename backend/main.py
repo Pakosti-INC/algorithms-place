@@ -2,8 +2,8 @@ import uvicorn
 from fastapi import FastAPI, Depends, HTTPException, status
 from dependencies import get_db, get_current_user
 from schemas import *
-from sqlalchemy.orm import Session
-from models import Submission, Problem, User
+from sqlalchemy.orm import Session, contains_eager
+from models import Submission, Problem, User, GroupProblemLink, Topic
 from sqlalchemy import select
 
 app = FastAPI()
@@ -55,14 +55,16 @@ def get_single_problem(id: int, db: Session = Depends(get_db)):
     return problem
 
 
-@app.get("/problems", response_model=ProblemResponse, tags=["Проблемы"])
-def get_problems(db: Session = Depends(get_db)):
-    stmt = select(Problem)
+@app.get("/problems", response_model=list[ProblemResponse], tags=["Проблемы"])
+def get_problems(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+
+    stmt = select(Problem).join(GroupProblemLink).where(GroupProblemLink.group_id == current_user.group_id)
     problem = db.scalars(stmt).all()
     return problem
 
 @app.post("/problems", response_model=ProblemResponse, status_code=status.HTTP_201_CREATED, tags=["Проблемы"])
 def create_problem(item: ProblemCreate, db: Session = Depends(get_db)):
+
     new_problem = Problem(
         title=item.title,
         description=item.description,
@@ -77,6 +79,23 @@ def create_problem(item: ProblemCreate, db: Session = Depends(get_db)):
 def index():
     return "Типо главная"
 
+
+@app.get("/dashboard", response_model=list[TopicDashboardResponse], tags=["Дашборд"])
+def get_dashboard(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    stmt = (
+        select(Topic)
+        .join(Topic.problem)
+        .join(GroupProblemLink, GroupProblemLink.problem_id == Problem.id)
+        .where(GroupProblemLink.group_id == current_user.group_id)
+        # Указываем SQLAlchemy упаковать отфильтрованные задачи внутрь тем
+        .options(contains_eager(Topic.problem))
+    )
+
+    # Вызов .unique() обязателен при джоине связей один-ко-многим,
+    # чтобы темы не дублировались в итоговом списке
+    topics = db.scalars(stmt).unique().all()
+
+    return topics
 
 if __name__ == "__main__":
     uvicorn.run('main:app', reload=True)
