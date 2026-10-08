@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String, Text, Enum, ForeignKey, Boolean, func
+from sqlalchemy import Integer, String, Text, Enum, ForeignKey, Boolean, func, DateTime
 from typing import Optional
 from datetime import datetime
 from sqlalchemy.orm import declarative_base, Mapped, mapped_column
@@ -16,7 +16,12 @@ class Group(Base):
 
     # relationship для получения всех студентов группы (group.users)
     users: Mapped[list["User"]] = relationship(back_populates="group")
+    problem_links: Mapped[list["GroupProblemLink"]] = relationship(back_populates="group")
 
+class UsersRole(str, enum.Enum):
+    TEACHER = "TEACHER"
+    STUDENT = "STUDENT"
+    MODERATOR = "MODERATOR"
 
 class User(Base):
     __tablename__ = "users"
@@ -26,10 +31,10 @@ class User(Base):
     first_name: Mapped[str] = mapped_column(String(30))
     middle_name: Mapped[Optional[str]] = mapped_column(String(30), nullable=True)
     last_name: Mapped[str] = mapped_column(String(30))
-
+    role: Mapped[UsersRole] = mapped_column(default=UsersRole.STUDENT)
     #TODO Не забыть про добавление соли к хэшу!
     password_hash: Mapped[str] = mapped_column(Text)
-    group_id: Mapped[int] = mapped_column(ForeignKey("groups.id"))
+    group_id: Mapped[int] = mapped_column(ForeignKey("groups.id"), nullable=True)
 
     # relationship для получения группы студента (user.group)
     group: Mapped["Group"] = relationship(back_populates="users")
@@ -41,13 +46,13 @@ class Problem(Base):
     title: Mapped[str] = mapped_column(String(120))
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     difficulty: Mapped[str] = mapped_column(String(30))
-    topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
+    topic_id: Mapped[Optional[int]] = mapped_column(ForeignKey("topics.id"))
 
     # relationship для получения всех тестов у проблемы (problem.tests)
     tests: Mapped[list["Test"]] = relationship(back_populates="problem")
     # relationship для получения темы у проблемы (problem.topic)
     topic: Mapped[list["Topic"]] = relationship(back_populates="problem")
-
+    group_links: Mapped[list["GroupProblemLink"]] = relationship(back_populates="problem")
 
 class Test(Base):
     __tablename__ = "tests"
@@ -62,10 +67,10 @@ class Test(Base):
     problem: Mapped["Problem"] = relationship(back_populates="tests")
 
 class SubmissionStatus(str, enum.Enum):
-    PENDING = "Pending"
-    ACCEPTED = "Accepted"
-    WA = "Wrong Answer"
-    TO = "Timeout"
+    PENDING = "PENDING"
+    ACCEPTED = "ACCEPTED"
+    WA = "WRONG ANSWER"
+    TO = "TIMEOUT"
 
 class Submission(Base):
     __tablename__ = "submissions"
@@ -79,6 +84,7 @@ class Submission(Base):
     speed: Mapped[Optional[int]] = mapped_column(Integer, nullable=True, comment="Скорость решения задачи в мс")
     memory: Mapped[Optional[int]] = mapped_column(Integer, nullable=True, comment="Память затраченная сервером на решение задачи в килобайтах")
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
 
@@ -90,8 +96,10 @@ class Review(Base):
     __tablename__ = "reviews"
 
     id: Mapped[int] = mapped_column(Integer , primary_key=True)
-    status: Mapped[ReviewStatus] = mapped_column(Enum(ReviewStatus))
+
+    status: Mapped[ReviewStatus] = mapped_column()
     comment: Mapped[str] = mapped_column(Text)
+
     submission_id: Mapped[int] = mapped_column(ForeignKey("submissions.id"))
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
@@ -101,6 +109,19 @@ class Topic(Base):
     id: Mapped[int] = mapped_column(Integer , primary_key=True)
     name: Mapped[str] = mapped_column(Text)
 
-    problems: Mapped[list["Problem"]] = relationship(back_populates="topic")
+    problem: Mapped[list["Problem"]] = relationship(back_populates="topic")
+
+class GroupProblemLink(Base):
+    __tablename__ = "group_problems_links"
+
+    id: Mapped[int] = mapped_column(Integer , primary_key=True)
+
+    group_id: Mapped[int] = mapped_column(ForeignKey("groups.id"))
+    problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
 
 
+    deadline: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
+
+    # Двусторонние связи
+    group: Mapped["Group"] = relationship(back_populates="problem_links")
+    problem: Mapped["Problem"] = relationship(back_populates="group_links")

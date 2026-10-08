@@ -8,6 +8,8 @@ class SubmissionCreate(BaseModel):
     # ID пользователя будет браться из токена авторизации,
     # а время и статус (PENDING) база проставит сама.
 
+    model_config = ConfigDict(from_attributes=True)
+
 class SubmissionResponse(BaseModel):
     id: int
     status: str
@@ -15,6 +17,7 @@ class SubmissionResponse(BaseModel):
     memory: int | None = None
     notes: str | None = None
     # строка ниже делает так, что Pydantic понимает объекты SQLAlchemy
+
     model_config = ConfigDict(from_attributes=True)
 
 class ProblemResponse(BaseModel):
@@ -30,3 +33,24 @@ class ProblemCreate(BaseModel):
     title: str
     description: str | None = None
     difficulty: str
+    topic_id: int | None = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+class ProblemDashboard(BaseModel):
+    id: int
+    title: str
+    difficulty: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class TopicDashboardResponse(BaseModel):
+    id: int
+    name: str
+    problem: list[ProblemDashboard]
+
+    model_config = ConfigDict(from_attributes=True)
+
+#TODO ручки(и схемы) для входа препода и студента должны быть разными, и схемы для них тоже,
+# ибо схема на вход студента будет учитывать group_id, а регистрация препода нет.

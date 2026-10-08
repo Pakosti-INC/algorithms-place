@@ -10,10 +10,3 @@ engine = create_engine(
 Session = sessionmaker(autoflush=False, bind=engine, autocommit=False)
 
 Base.metadata.create_all(engine)
-
-def get_db():
-    db = Session()
-    try:
-        yield db
-    finally:
-        db.close()
