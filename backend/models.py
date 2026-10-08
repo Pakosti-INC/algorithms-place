@@ -46,7 +46,7 @@ class Problem(Base):
     title: Mapped[str] = mapped_column(String(120))
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     difficulty: Mapped[str] = mapped_column(String(30))
-    topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
+    topic_id: Mapped[Optional[int]] = mapped_column(ForeignKey("topics.id"))
 
     # relationship для получения всех тестов у проблемы (problem.tests)
     tests: Mapped[list["Test"]] = relationship(back_populates="problem")

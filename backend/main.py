@@ -62,13 +62,20 @@ def get_problems(db: Session = Depends(get_db), current_user: User = Depends(get
     problem = db.scalars(stmt).all()
     return problem
 
-@app.post("/problems", response_model=ProblemResponse, status_code=status.HTTP_201_CREATED, tags=["Проблемы"])
-def create_problem(item: ProblemCreate, db: Session = Depends(get_db)):
+@app.post("/problems/create", response_model=ProblemResponse, status_code=status.HTTP_201_CREATED, tags=["Проблемы"])
+def create_problem(item: ProblemCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+
+    if current_user.role == "STUDENT":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Отказано в доступе."
+        )
 
     new_problem = Problem(
         title=item.title,
-        description=item.description,
-        difficulty=item.difficulty
+       description=item.description,
+       difficulty=item.difficulty,
+        topic_id=item.topic_id
     )
     db.add(new_problem)
     db.commit()
