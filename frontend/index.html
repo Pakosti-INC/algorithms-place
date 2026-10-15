@@ -3,209 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>УрФУ / Практикум</title>
+    <title>УрФУ / Алгоритмы</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #F1F5F9; }
-        /* Плавный поворот стрелочки */
-        .icon-rotate { transition: transform 0.2s ease-in-out; }
-        .rotate-180 { transform: rotate(180deg); }
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
     </style>
 </head>
-<body class="text-slate-800 pb-12">
+<body class="h-screen flex flex-col text-slate-800 bg-white overflow-hidden">
 
-    <!-- ШАПКА -->
-    <header class="bg-white border-b border-slate-200 px-8 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-5">
-            <!-- Логотип УрФУ -->
-            <img src="static/img/darklogo.png" alt="Логотип УрФУ" class="h-15 w-auto">
+    <!-- ШАПКА ГЛАВНАЯ -->
+    <header class="h-16 border-b border-slate-200 flex items-center justify-between px-6 flex-shrink-0 bg-white z-20 relative shadow-sm">
+        <div class="font-bold text-2xl text-[#003366] tracking-tight">УрФУ</div>
 
-            <div class="font-bold text-xl text-blue-900 ml-5">УрФУ / Практикум</div>
-
-        </div>
-
-        <nav class="hidden md:flex gap-6 text-sm font-medium">
-            <a href="#" class="text-slate-500 hover:text-blue-900 transition-colors">Курсы</a>
-            <a href="#" class="text-orange-500 border-b-2 border-orange-500 pb-1">Мои задачи</a>
-            <a href="#" class="text-slate-500 hover:text-blue-900 transition-colors">Очередь проверки</a>
-        </nav>
-
-        <div class="flex items-center gap-4">
-            <!-- Уведомления -->
-            <button class="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-orange-500 rounded-full border-2 border-white"></span>
+        <div class="flex items-center gap-6">
+            <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase">Алгоритмы и структуры данных</span>
+            <button class="text-slate-400 hover:text-[#003366] transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
             </button>
-            <!-- Профиль -->
-            <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity">
-                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-900 font-bold text-sm">АС</div>
-                <div class="text-sm font-medium">Алексей Караев</div>
-            </div>
+            <div class="w-8 h-8 rounded-full bg-[#003366] text-white flex items-center justify-center text-xs font-bold cursor-pointer hover:opacity-90">КС</div>
         </div>
     </header>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
-    <main class="max-w-7xl mx-auto px-8 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- РАБОЧАЯ ОБЛАСТЬ (3 колонки) -->
+    <main class="flex-1 flex overflow-hidden bg-slate-50">
 
-        <!-- Левая колонка: Задачи -->
-        <div class="lg:col-span-2 space-y-6">
+        <!-- КОЛОНКА 1: Прогресс и задачи (Левая) -->
+        <aside id="left-panel" class="w-[320px] flex-shrink-0 border-r border-slate-200 bg-white transition-all duration-300 ease-in-out relative overflow-hidden shadow-[4px_0_12px_rgba(0,0,0,0.02)] z-10">
 
-            <!-- Баннер курса -->
-            <div class="bg-blue-900 rounded-2xl p-8 text-white relative overflow-hidden shadow-md">
-                <div class="text-orange-400 text-sm font-bold tracking-wider mb-2">АЛГОРИТМЫ И PYTHON</div>
-                <h1 class="text-3xl font-bold mb-4">75 задач для уверенного старта</h1>
-                <p class="text-blue-200 text-sm mb-6 max-w-md">Пройдено 18 из 75 задач • Набрано 42 балла БРС • Решайте задачи и получайте оценку от преподавателя.</p>
-                <button class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2.5 px-6 rounded-lg transition-colors shadow-sm">
-                    Продолжить: Скользящее окно
+            <!-- Кнопка сворачивания левой панели -->
+            <button id="toggle-left" class="absolute top-3.5 right-3.5 z-20 p-1.5 bg-white hover:bg-slate-100 rounded-md text-slate-400 hover:text-slate-700 transition-colors border border-transparent hover:border-slate-200" title="Скрыть панель задач">
+                <svg id="icon-left" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+
+            <!-- Обертка контента (фиксированная ширина, чтобы верстка не ломалась при сдвиге) -->
+            <div id="left-content" class="w-[320px] h-full flex flex-col transition-opacity duration-300">
+                <div class="p-6 border-b border-slate-200 pr-14">
+                    <h3 class="text-sm font-bold text-[#003366] mb-1">Ваш прогресс</h3>
+                    <div class="text-3xl font-bold text-[#003366] mb-3">18/75 <span class="text-lg">сделано</span></div>
+                    <div class="w-full bg-slate-100 rounded-full h-1.5 mb-2">
+                        <div class="bg-slate-300 h-1.5 rounded-full" style="width: 24%"></div>
+                    </div>
+                    <p class="text-xs text-slate-500">Продолжайте — вы на верном пути</p>
+                </div>
+
+                <div class="flex-1 overflow-y-auto custom-scrollbar">
+                    <div class="flex flex-col">
+                        <button class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 border-b border-slate-100 transition">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                <span class="text-sm font-medium text-slate-700">A. Hello, Yandex!</span>
+                            </div>
+                            <span class="text-xs font-mono text-slate-400">100/100</span>
+                        </button>
+
+                        <button class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 border-b border-slate-100 transition">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                <span class="text-sm font-medium text-slate-700">B. Сумма двух чисел</span>
+                            </div>
+                            <span class="text-xs font-mono text-slate-400">100/100</span>
+                        </button>
+
+                        <!-- Активная задача -->
+                        <button class="flex items-center justify-between px-6 py-4 bg-orange-50/50 border-b border-orange-100 transition relative">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-500"></div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                <span class="text-sm font-bold text-slate-900">E. Восстановление мозаики</span>
+                            </div>
+                            <span class="text-xs font-mono text-slate-400">0/100</span>
+                        </button>
+
+                        <button class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 border-b border-slate-100 transition">
+                            <div class="flex items-center gap-3">
+                                <div class="w-4 h-4 rounded-full border-2 border-slate-300"></div>
+                                <span class="text-sm font-medium text-slate-700">F. Скобочная последовательность</span>
+                            </div>
+                            <span class="text-xs text-slate-400">—</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- КОЛОНКА 2: Описание задачи (Центральная) -->
+        <section id="middle-panel" class="flex-1 min-w-0 border-r border-slate-200 bg-white transition-all duration-300 ease-in-out relative overflow-hidden">
+
+            <!-- Кнопка сворачивания описания -->
+            <button id="toggle-middle" class="absolute top-3.5 right-3.5 z-20 p-1.5 bg-white hover:bg-slate-100 rounded-md text-slate-400 hover:text-slate-700 transition-colors border border-transparent hover:border-slate-200" title="Скрыть описание">
+                <svg id="icon-middle" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+
+            <!-- Обертка контента -->
+            <div id="middle-content" class="min-w-[500px] h-full flex flex-col transition-opacity duration-300">
+                <div class="flex px-8 border-b border-slate-200 flex-shrink-0 pr-14 h-[56px] items-center">
+                    <button class="px-2 h-full text-sm font-bold text-orange-500 border-b-2 border-orange-500 mr-6">Описание</button>
+                    <button class="px-2 h-full text-sm font-medium text-slate-400 hover:text-slate-600">Решения</button>
+                </div>
+
+                <div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                    <div class="text-xs font-bold text-orange-500 tracking-widest uppercase mb-2">ЗАДАЧА E / 100 БАЛЛОВ</div>
+                    <h1 class="text-3xl font-bold text-[#003366] mb-8">Восстановление мозаики</h1>
+
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4">
+                            <div class="text-xs text-slate-400 mb-1">Ограничение времени</div>
+                            <div class="font-semibold text-lg text-slate-800">2 с</div>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4">
+                            <div class="text-xs text-slate-400 mb-1">Память</div>
+                            <div class="font-semibold text-lg text-slate-800">256 Мб</div>
+                        </div>
+                    </div>
+
+                    <div class="prose prose-sm text-slate-600 leading-relaxed mb-8">
+                        <p class="mb-4">В университетской мастерской восстанавливают мозаику. Она представляет собой прямоугольное поле из n × m клеток. Некоторые клетки заполнены, остальные пусты.</p>
+                        <p>Определите количество отдельных фрагментов мозаики. Две заполненные клетки принадлежат одному фрагменту, если между ними можно пройти по заполненным клеткам через общую сторону.</p>
+                    </div>
+
+                    <h3 class="text-lg font-bold text-[#003366] mb-3">Формат ввода</h3>
+                    <p class="text-sm text-slate-600 mb-8 leading-relaxed">
+                        В первой строке даны n и m (1 ≤ n, m ≤ 1000). Следующие n строк содержат по m символов: «#» обозначает заполненную клетку, «.» — пустую.
+                    </p>
+
+                    <h3 class="text-lg font-bold text-[#003366] mb-3">Формат вывода</h3>
+                    <p class="text-sm text-slate-600 mb-8 leading-relaxed">
+                        Выведите одно целое число — количество отдельных фрагментов мозаики.
+                    </p>
+
+                    <div class="bg-slate-50 border border-slate-100 rounded-xl p-6 grid grid-cols-2 gap-8">
+                        <div>
+                            <div class="text-xs font-bold text-slate-400 mb-2">Ввод:</div>
+                            <div class="font-mono text-sm text-slate-800">3 4</div>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-400 mb-2">Вывод:</div>
+                            <div class="font-mono text-sm text-slate-800">2</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- КОЛОНКА 3: Редактор кода (Правая) -->
+        <section id="right-panel" class="w-[480px] xl:w-[600px] flex-shrink-0 flex flex-col bg-white transition-all duration-300 ease-in-out shadow-[-4px_0_12px_rgba(0,0,0,0.02)] z-10">
+            <div class="h-[56px] border-b border-slate-200 flex justify-between items-center px-4 flex-shrink-0">
+                <select class="text-sm font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 py-1.5 px-3 rounded-md outline-none cursor-pointer transition-colors">
+                    <option>Python 3.12</option>
+                    <option>C++ 20</option>
+                </select>
+                <div class="text-xs text-slate-400">Сохранено</div>
+            </div>
+
+            <div class="px-4 py-2 border-b border-slate-100 bg-slate-50/50 text-xs font-mono text-[#003366] font-semibold">
+                main.py
+            </div>
+
+            <div class="flex-1 flex overflow-y-auto bg-white font-mono text-sm">
+                <div class="w-12 bg-white flex flex-col items-end py-4 pr-3 text-slate-300 select-none border-r border-slate-100">
+                    <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div>
+                </div>
+                <div class="flex-1 py-4 pl-4 overflow-x-auto text-[#003366] whitespace-pre outline-none" contenteditable="true" spellcheck="false">import sys
+
+def solve():
+    n, m = map(int, input().split())
+    grid = [input() for _ in range(n)]
+    visited = set()
+    fragments = 0
+
+    for row in range(n):
+        for col in range(m):
+            if grid[row][col] == "#":
+                # Explore connected cells
+                pass
+
+    print(fragments)
+
+if __name__ == "__main__":
+    solve()</div>
+            </div>
+
+            <div class="border-t border-slate-200 p-4 flex-shrink-0 bg-white">
+                <button class="w-full bg-[#F26522] hover:bg-orange-600 active:bg-orange-700 text-white font-bold py-3 px-4 rounded-lg flex justify-center items-center gap-2 transition shadow-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                    Отправить на проверку
                 </button>
             </div>
+        </section>
 
-            <!-- Раздел 01 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <button class="accordion-btn w-full px-6 py-4 flex justify-between items-center hover:bg-slate-50 transition-colors">
-                    <h2 class="font-bold text-lg">01 Строки и массивы</h2>
-                    <svg class="w-5 h-5 text-slate-400 icon-rotate rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="accordion-content px-6 pb-6 space-y-2">
-                    <div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl group transition-colors">
-                        <div class="flex items-center gap-4">
-                            <span class="text-green-600 bg-green-50 px-2 py-1 rounded text-xs font-semibold w-28 text-center">✓ Зачтено</span>
-                            <span class="font-medium text-slate-700">Словарь частот слов</span>
-                        </div>
-                        <div class="flex items-center gap-4 text-sm">
-                            <span class="text-slate-400 text-xs">Python</span>
-                            <button class="text-slate-400 hover:text-slate-600 font-medium">Смотреть код</button>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl group transition-colors">
-                        <div class="flex items-center gap-4">
-                            <span class="text-orange-500 bg-orange-50 px-2 py-1 rounded text-xs font-semibold w-28 text-center">⏱ Проверка</span>
-                            <span class="font-medium text-slate-700">Самая длинная подстрока</span>
-                        </div>
-                        <div class="flex items-center gap-4 text-sm">
-                            <span class="text-slate-400 text-xs">Python</span>
-                            <button class="text-slate-400 cursor-not-allowed">Просмотр</button>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between p-3 bg-red-50/50 rounded-xl border border-red-100">
-                        <div class="flex items-center gap-4">
-                            <span class="text-red-600 bg-red-100 px-2 py-1 rounded text-xs font-semibold w-28 text-center">! Замечания</span>
-                            <span class="font-medium text-slate-900">Уникальные элементы массива</span>
-                        </div>
-                        <div class="flex items-center gap-4 text-sm">
-                            <button class="text-red-600 font-bold hover:text-red-700">Исправить →</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Раздел 02 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <button class="accordion-btn w-full px-6 py-4 flex justify-between items-center hover:bg-slate-50 transition-colors">
-                    <h2 class="font-bold text-lg">02 Два указателя</h2>
-                    <svg class="w-5 h-5 text-slate-400 icon-rotate rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div class="accordion-content px-6 pb-6 space-y-2">
-                    <div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl group transition-colors">
-                        <div class="flex items-center gap-4">
-                            <span class="text-green-600 bg-green-50 px-2 py-1 rounded text-xs font-semibold w-28 text-center">✓ Зачтено</span>
-                            <span class="font-medium text-slate-700">Перемещение нулей</span>
-                        </div>
-                        <div class="flex items-center gap-4 text-sm">
-                            <button class="text-slate-400 hover:text-slate-600 font-medium">Смотреть код</button>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl group transition-colors">
-                        <div class="flex items-center gap-4">
-                            <span class="text-slate-400 bg-slate-100 px-2 py-1 rounded text-xs font-semibold w-28 text-center">Не начато</span>
-                            <span class="font-medium text-slate-700">Максимальная площадь</span>
-                        </div>
-                        <div class="flex items-center gap-4 text-sm">
-                            <button class="text-blue-600 font-bold hover:text-blue-800">Решить →</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Раздел 03 -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <button class="accordion-btn w-full px-6 py-4 flex justify-between items-center hover:bg-slate-50 transition-colors">
-                    <h2 class="font-bold text-lg">03 Скользящее окно</h2>
-                    <svg class="w-5 h-5 text-slate-400 icon-rotate" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <!-- Этот блок изначально скрыт (класс hidden) -->
-                <div class="accordion-content hidden px-6 pb-6 space-y-2">
-                    <div class="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl group transition-colors">
-                        <div class="flex items-center gap-4">
-                            <span class="text-slate-400 bg-slate-100 px-2 py-1 rounded text-xs font-semibold w-28 text-center">Не начато</span>
-                            <span class="font-medium text-slate-700">Максимальное среднее</span>
-                        </div>
-                        <div class="flex items-center gap-4 text-sm">
-                            <button class="text-blue-600 font-bold hover:text-blue-800">Решить →</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Правая колонка: Виджеты -->
-        <div class="space-y-6">
-
-            <!-- Прогресс -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                <h3 class="font-bold text-slate-800 mb-2">Ваш прогресс</h3>
-                <div class="text-3xl font-bold text-blue-900 mb-4">18 <span class="text-lg text-slate-400 font-normal">/ 75</span></div>
-
-                <div class="w-full bg-slate-100 rounded-full h-2 mb-4 overflow-hidden">
-                    <div class="bg-orange-500 h-full rounded-full" style="width: 24%"></div>
-                </div>
-
-                <div class="space-y-2 text-sm">
-                    <div class="flex justify-between items-center"><span class="text-slate-500">Зачтено</span> <span class="font-medium text-green-600">18</span></div>
-                    <div class="flex justify-between items-center"><span class="text-slate-500">На проверке</span> <span class="font-medium text-orange-500">3</span></div>
-                    <div class="flex justify-between items-center"><span class="text-slate-500">Осталось</span> <span class="font-medium text-slate-700">54</span></div>
-                </div>
-            </div>
-
-            <!-- Обратная связь -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-                <h3 class="font-bold text-slate-800 mb-4">Ответы преподавателя</h3>
-
-                <div class="bg-slate-50 p-4 rounded-xl mb-4 border border-slate-100">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-7 h-7 rounded-full bg-blue-900 text-white flex items-center justify-center text-xs font-bold">ДИ</div>
-                        <div class="text-xs font-medium text-slate-600 leading-tight">Дмитрий Игоревич<br><span class="text-slate-400 font-normal">2 часа назад</span></div>
-                    </div>
-                    <p class="text-sm font-bold mb-1 text-slate-800">Уникальные элементы массива</p>
-                    <p class="text-sm text-slate-500 italic">«Обрати внимание на ...»</p>
-                </div>
-
-                <button class="w-full border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white font-bold py-2.5 rounded-lg transition-all">
-                    Перейти к замечаниям
-                </button>
-            </div>
-
-        </div>
     </main>
 
-    <!-- Скрипт для работы кнопок-аккордеонов -->
+    <!-- СКРИПТ АНИМАЦИИ ПАНЕЛЕЙ -->
     <script>
-        document.querySelectorAll('.accordion-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                // Находим контент сразу под нажатой кнопкой
-                const content = button.nextElementSibling;
-                // Находим иконку стрелочки внутри кнопки
-                const icon = button.querySelector('.icon-rotate');
+        // Элементы левой панели (Прогресс)
+        const leftPanel = document.getElementById('left-panel');
+        const leftContent = document.getElementById('left-content');
+        const toggleLeftBtn = document.getElementById('toggle-left');
+        const iconLeft = document.getElementById('icon-left');
 
-                // Переключаем видимость (класс hidden из Tailwind)
-                content.classList.toggle('hidden');
-                // Переворачиваем стрелочку
-                icon.classList.toggle('rotate-180');
-            });
+        // Элементы центральной панели (Описание)
+        const middlePanel = document.getElementById('middle-panel');
+        const middleContent = document.getElementById('middle-content');
+        const toggleMiddleBtn = document.getElementById('toggle-middle');
+        const iconMiddle = document.getElementById('icon-middle');
+
+        // Правая панель (Редактор)
+        const rightPanel = document.getElementById('right-panel');
+
+        // Логика сворачивания левой панели
+        toggleLeftBtn.addEventListener('click', () => {
+            const isCollapsed = leftPanel.classList.contains('w-12');
+            if (isCollapsed) {
+                // Развернуть
+                leftPanel.classList.remove('w-12');
+                leftPanel.classList.add('w-[320px]');
+                leftContent.classList.remove('opacity-0', 'pointer-events-none');
+                iconLeft.classList.remove('rotate-180');
+            } else {
+                // Свернуть
+                leftPanel.classList.remove('w-[320px]');
+                leftPanel.classList.add('w-12'); // Ширина 48px
+                leftContent.classList.add('opacity-0', 'pointer-events-none');
+                iconLeft.classList.add('rotate-180');
+            }
+        });
+
+        // Логика сворачивания центральной панели
+        toggleMiddleBtn.addEventListener('click', () => {
+            const isCollapsed = middlePanel.classList.contains('w-12');
+            if (isCollapsed) {
+                // Развернуть описание, сжать код обратно
+                middlePanel.classList.remove('w-12', 'flex-none');
+                middlePanel.classList.add('flex-1');
+                middleContent.classList.remove('opacity-0', 'pointer-events-none');
+                iconMiddle.classList.remove('rotate-180');
+
+                rightPanel.classList.remove('flex-1');
+                rightPanel.classList.add('w-[480px]', 'xl:w-[600px]');
+            } else {
+                // Свернуть описание, растянуть код на весь экран
+                middlePanel.classList.remove('flex-1');
+                middlePanel.classList.add('w-12', 'flex-none'); // Ширина 48px
+                middleContent.classList.add('opacity-0', 'pointer-events-none');
+                iconMiddle.classList.add('rotate-180');
+
+                rightPanel.classList.remove('w-[480px]', 'xl:w-[600px]');
+                rightPanel.classList.add('flex-1');
+            }
         });
     </script>
 </body>
 </html>
-<!--lol-->
