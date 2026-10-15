@@ -111,16 +111,23 @@ def link_problem_to_group(item: GroupProblemLinkCreate, db: Session = Depends(ge
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Отказано в доступе."
         )
+    stmt = (select(GroupProblemLink).where(GroupProblemLink.group_id == item.group_id, GroupProblemLink.problem_id == item.problem_id))
+    existing_link = db.scalar(stmt)
+    if not existing_link:
         new_link = GroupProblemLink(
-            group_id=item.group_id,
-            problem_id=item.problem_id,
-            deadline=item.deadline
+                group_id=item.group_id,
+                problem_id=item.problem_id,
+                deadline=item.deadline
         )
         db.add(new_link)
         db.commit()
         db.refresh(new_link)
         return new_link
-
+    else:
+        existing_link.deadline=item.deadline
+        db.commit()
+        db.refresh(existing_link)
+        return existing_link
 
 
 if __name__ == "__main__":
