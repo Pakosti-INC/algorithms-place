@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
 # Схема для приема данных от клиента (прием решения кода)
@@ -51,6 +52,14 @@ class TopicDashboardResponse(BaseModel):
     problem: list[ProblemDashboard]
 
     model_config = ConfigDict(from_attributes=True)
+
+class GroupProblemLinkCreate(BaseModel):
+    # ID создается базой данных самостоятельно
+    group_id: int
+    problem_id: int
+
+    deadline: datetime | None = None
+
 
 #TODO ручки(и схемы) для входа препода и студента должны быть разными, и схемы для них тоже,
 # ибо схема на вход студента будет учитывать group_id, а регистрация препода нет.

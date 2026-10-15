@@ -104,5 +104,9 @@ def get_dashboard(db: Session = Depends(get_db), current_user: User = Depends(ge
 
     return topics
 
+@app.post("/problems/link", response_model=GroupProblemLinkCreate, status_code=status.HTTP_201_CREATED)
+def link_problem_to_group(db: Session = Depends(get_db)):
+    return
+
 if __name__ == "__main__":
     uvicorn.run('main:app', reload=True)
