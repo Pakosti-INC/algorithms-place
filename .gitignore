@@ -4,3 +4,4 @@ __pycache__/
 .idea
 .env
 venv
+dev_db.db
