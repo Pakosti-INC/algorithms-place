@@ -105,8 +105,23 @@ def get_dashboard(db: Session = Depends(get_db), current_user: User = Depends(ge
     return topics
 
 @app.post("/problems/link", response_model=GroupProblemLinkCreate, status_code=status.HTTP_201_CREATED)
-def link_problem_to_group(db: Session = Depends(get_db)):
-    return
+def link_problem_to_group(item: GroupProblemLinkCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    if current_user.role == "STUDENT":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Отказано в доступе."
+        )
+        new_link = GroupProblemLink(
+            group_id=item.group_id,
+            problem_id=item.problem_id,
+            deadline=item.deadline
+        )
+        db.add(new_link)
+        db.commit()
+        db.refresh(new_link)
+        return new_link
+
+
 
 if __name__ == "__main__":
     uvicorn.run('main:app', reload=True)
