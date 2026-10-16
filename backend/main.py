@@ -129,6 +129,13 @@ def link_problem_to_group(item: GroupProblemLinkCreate, db: Session = Depends(ge
         db.refresh(existing_link)
         return existing_link
 
+@app.post("/login")
+def login():
+    return
+
+@app.post("/register")
+def create_new_user():
+    return
 
 if __name__ == "__main__":
     uvicorn.run('main:app', reload=True)
