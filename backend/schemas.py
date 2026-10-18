@@ -1,5 +1,7 @@
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
+
+
 
 # Схема для приема данных от клиента (прием решения кода)
 class SubmissionCreate(BaseModel):
@@ -60,6 +62,34 @@ class GroupProblemLinkCreate(BaseModel):
 
     deadline: datetime | None = None
 
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "Bearer"
+
+class RegisterNewUser(BaseModel):
+    email: EmailStr
+    first_name: str
+    middle_name: str
+    last_name: str
+    password: str
+    group_id: int | None = None
+
+class RegisterNewUserResponse(BaseModel):
+    email: EmailStr
+    first_name: str
+    middle_name: str
+    last_name: str
+    role: str
+    password_hash: str
+    group_id: int | None = None
+
+# Схема для dependencies.py
+class CurrentUser(BaseModel):
+    user_id: int
+    group_id: int | None = None
+    role: str
 
 #TODO ручки(и схемы) для входа препода и студента должны быть разными, и схемы для них тоже,
 # ибо схема на вход студента будет учитывать group_id, а регистрация препода нет.
