@@ -1,11 +1,11 @@
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, EmailStr
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 
 # Схема для приема данных от клиента (прием решения кода)
 class SubmissionCreate(BaseModel):
-    input_code: str
+    input_code: str = Field(examples=["print('Hello World!')\n"])
     problem_id: int
     notes: str | None = None
     # ID пользователя будет браться из токена авторизации,
