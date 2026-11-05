@@ -1,3 +1,5 @@
+from tkinter.scrolledtext import example
+
 from sqlalchemy import Integer, String, Text, Enum, ForeignKey, Boolean, func, DateTime
 from typing import Optional
 from datetime import datetime
@@ -66,18 +68,12 @@ class Test(Base):
     # relationship для получения всех проблем у  (problem.tests)
     problem: Mapped["Problem"] = relationship(back_populates="tests")
 
-class SubmissionStatus(str, enum.Enum):
-    PENDING = "PENDING"
-    ACCEPTED = "ACCEPTED"
-    WA = "WRONG ANSWER"
-    TO = "TIMEOUT"
-
 class Submission(Base):
     __tablename__ = "submissions"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    input_code: Mapped[str] = mapped_column(Text)
-    status: Mapped[SubmissionStatus] = mapped_column(Enum(SubmissionStatus), default=SubmissionStatus.PENDING)
+    input_code: Mapped[str] = (mapped_column(Text))
+    status: Mapped[str] = mapped_column(default="PENDING")
     # Пока не будет выбора ЯП.
     #code_lang: Mapped[#SubmissionLangSelect] = mapped_column(Enum(SubmissionLangSelect))
     send_time: Mapped[datetime] = mapped_column(server_default=func.now())
