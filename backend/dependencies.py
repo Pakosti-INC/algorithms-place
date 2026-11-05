@@ -1,9 +1,9 @@
 from fastapi import Depends,HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from database import Session as SessionLocal
-from schemas import CurrentUser
-from models import User, UsersRole
+from backend.database import Session as SessionLocal
+from backend.schemas import CurrentUser
+from backend.models import User, UsersRole
 from fastapi.security import OAuth2PasswordBearer
 import os
 from dotenv import load_dotenv
