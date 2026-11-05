@@ -7,6 +7,7 @@ from models import Submission, Problem, User, GroupProblemLink, Topic
 from sqlalchemy import select, exists
 from security import get_password_hash, verify_password, create_access_token
 from fastapi.security import OAuth2PasswordRequestForm
+from worker import process_submission_dummy
 
 app = FastAPI()
 
@@ -47,6 +48,9 @@ def create_submission(item: SubmissionCreate, db: Session = Depends(get_db)):
     db.add(new_submission)
     db.commit()
     db.refresh(new_submission)
+
+    process_submission_dummy.delay(new_submission.id)
+
     return new_submission
 
 
