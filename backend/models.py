@@ -84,9 +84,10 @@ class Submission(Base):
     speed: Mapped[Optional[int]] = mapped_column(Integer, nullable=True, comment="Скорость решения задачи в мс")
     memory: Mapped[Optional[int]] = mapped_column(Integer, nullable=True, comment="Память затраченная сервером на решение задачи в килобайтах")
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    output: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
 class ReviewStatus(enum.Enum):
     ACCEPTED = "Accepted"

@@ -1,13 +1,13 @@
 import uvicorn
 from fastapi import FastAPI, Depends, HTTPException, status
-from dependencies import get_db, get_current_user
-from schemas import *
+from backend.dependencies import get_db, get_current_user
+from backend.schemas import *
 from sqlalchemy.orm import Session, contains_eager
-from models import Submission, Problem, User, GroupProblemLink, Topic
+from backend.models import Submission, Problem, User, GroupProblemLink, Topic
 from sqlalchemy import select, exists
-from security import get_password_hash, verify_password, create_access_token
+from backend.security import get_password_hash, verify_password, create_access_token
 from fastapi.security import OAuth2PasswordRequestForm
-from worker import process_submission_dummy
+from backend.worker import process_submission_dummy
 
 app = FastAPI()
 
@@ -200,4 +200,4 @@ def login_user(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestFo
 
 
 if __name__ == "__main__":
-    uvicorn.run('main:app', reload=True)
+    uvicorn.run('backend.main:app', reload=True)
