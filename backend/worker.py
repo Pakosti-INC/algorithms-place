@@ -4,7 +4,7 @@ from backend.database import Session
 from backend.models import Submission, Test
 from sqlalchemy import select
 from backend.sandbox import run_test_in_docker
-
+import re
 
 # Инициализируем приложение Celery, подключаемся к локальному Redis
 celery_app = Celery(
@@ -33,14 +33,13 @@ def process_submission_dummy(submission_id: int):
             db_submission.status = "ERROR"
             db.commit()
             return
-
+        max_time_ms = 0
+        max_memory_mb = 0.0
         input_code = db_submission.input_code
 
+
         for test in test_cases:
-            result = run_test_in_docker(submission_id=submission_id, input_code=input_code, data=test.input_data)
-            exit_code = result.exit_code
-            raw_output = result.output
-            output_str = raw_output.decode("utf-8")
+            exit_code, output_str, time_output = run_test_in_docker(submission_id=submission_id, input_code=input_code, data=test.input_data)
             db_submission.output = output_str
             if exit_code == 124:
                 db_submission.status = "Time Limit Exception"
@@ -57,6 +56,23 @@ def process_submission_dummy(submission_id: int):
                 db.commit()
                 return
 
+        # Парсим User time (в секундах переводим в миллисекунды)
+        time_match = re.search(r"User time \(seconds\):\s*([\d.]+)", time_output)
+        if time_match:
+            sec = float(time_match.group(1))
+            ms = float(sec * 1000)
+            max_time_ms = max(max_time_ms, ms)
+
+        # Парсим Maximum resident set size (в килобайтах переводим в мегабайты)
+        mem_match = re.search(r"Maximum resident set size \(kbytes\):\s*(\d+)", time_output)
+        if mem_match:
+            kb = int(mem_match.group(1))
+            mb = round(kb / 1024, 2)
+            max_memory_mb = max(max_memory_mb, mb)
+
+        db_submission.memory = f"{max_memory_mb} MB"
+        # Сохраняем в базу
+        db_submission.speed = f"{max_time_ms} ms"
         db_submission.status = "ACCEPTED"
         db.commit()
         return
