@@ -1,0 +1,17 @@
+services:
+  # 1. Брокер сообщений для Celery
+  redis:
+    image: redis:alpine
+    container_name: algo_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # 2. Долгоживущий контейнер-песочница
+  sandbox:
+    image: python:3.11-alpine
+    container_name: algo_sandbox_container
+    command: tail -f /dev/null
+    volumes:
+      - ./shared_sandbox:/sandbox_env
+    restart: unless-stopped
