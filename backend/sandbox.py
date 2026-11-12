@@ -1,45 +1,48 @@
 import docker
-import tempfile
 import os
-import requests
-
+import shutil
 
 client = docker.from_env()
 
-test_code = 'print("Hello from Docker!")'
+def run_test_in_docker(submission_id: int, data: str, input_code: str):
 
-# Создаем временную папку на хосте
-with tempfile.TemporaryDirectory() as temp_dir:
-    # Собираем путь к нашему будущему файлу
-    file_path = os.path.join(temp_dir, "main.py")
+    host_dir = f"./shared_sandbox/sub_{submission_id}"
+    guest_dir = f"/sandbox_env/sub_{submission_id}"
 
-    # Создаем файл и записываем в него код
-    with open(file_path, "w", encoding="utf-8") as f:
-        f.write(test_code)
-
-    print(f"Временная папка создана здесь: {temp_dir}")
-    print(f"Файл main.py готов к пробросу в Docker.")
-
-    container = client.containers.run(
-        "python:3.11-alpine", command=["python", "/app/main.py"],
-        volumes={temp_dir: {'bind': '/app', 'mode': 'ro'}},
-        detach=True, network_disabled=True, mem_limit="128m")
     try:
-        # Ждем максимум 2 секунды
-        result = container.wait(timeout=2)
-        # Если код успел выполниться, забираем логи и декодируем байты в строку
-        output = container.logs().decode("utf-8")
-        print(f"Статус: OK\nВывод: {output}")
+        container = client.containers.get("algo_sandbox_container")
 
-    except requests.exceptions.ReadTimeout:
-        # Если время вышло, останавливаем контейнер
-        container.stop()
-        print("Статус: Time Limit Exceeded (TLE)")
+        file_path = os.path.join(host_dir, "main.py")
+        os.makedirs(host_dir, exist_ok=True)
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(input_code)
+        if data != None:
+            file_path = os.path.join(host_dir, "input.txt")
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(data)
+
+
+
+
+        # Команда на таймер решения, сейчас стоит 5 секунд
+        # Оборачиваем вызов в системный time -v.
+        # Важно: stdout пишется в output.txt, а stderr (где живет time)
+        # смешивается с выводом exec_run, так что мы заберем его в python-коде.
+        command = f"sh -c 'timeout 5s /usr/bin/time -v python3 {guest_dir}/main.py < {guest_dir}/input.txt > {guest_dir}/output.txt'"
+
+        result = container.exec_run(command)
+
+        # Читаем настоящий output программы из файла, который записался в volume
+        output_file_path = os.path.join(host_dir, "output.txt")
+        program_output = ""
+        if os.path.exists(output_file_path):
+            with open(output_file_path, "r", encoding="utf-8") as f:
+                program_output = f.read()
+
+        # Возвращаем код выхода, чистый вывод программы и сырой текст time из stderr
+        return result.exit_code, program_output, result.output.decode("utf-8")
+
 
     finally:
-        # Гарантированно удаляем контейнер из системы при любом исходе
-        container.remove(force=True)
+        shutil.rmtree(host_dir, ignore_errors=True)
 
-
-# Как только код доходит сюда, папка temp_dir и файл main.py навсегда удаляются ОС
-print("Скрипт завершен, мусор убран.")
