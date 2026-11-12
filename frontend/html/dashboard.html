@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>УрФУ / Практикум</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F1F5F9; }
+        /* Плавный поворот стрелочки */
+        .icon-rotate { transition: transform 0.2s ease-in-out; }
+        .rotate-180 { transform: rotate(180deg); }
+    </style>
+</head>
+<body>
+
+<!-- ШАПКА -->
+<header class="app-header">
+    <div class="header-brand">
+        <img src="static/img/darklogo.png" alt="УрФУ" class="header-logo" onerror="this.style.display='none'">
+        <div class="header-title">УрФУ / Практикум</div>
+    </div>
+
+    <nav class="header-nav">
+        <a href="#" class="nav-link">Курсы</a>
+        <a href="#" class="nav-link active">Мои задачи</a>
+        <a href="#" class="nav-link">Очередь проверки</a>
+    </nav>
+
+    <div class="header-actions">
+        <button class="btn-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+            <span class="notification-dot"></span>
+        </button>
+        <div class="user-profile">
+            <div class="user-avatar">АС</div>
+            <div class="user-name">Алексей Караев</div>
+        </div>
+    </div>
+</header>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<main class="main-container">
+
+    <!-- Левая колонка: Задачи -->
+    <div class="content-col">
+
+        <!-- Баннер -->
+        <div class="course-banner">
+            <div class="banner-tag">АЛГОРИТМЫ И PYTHON</div>
+            <h1 class="banner-title">75 задач для уверенного старта</h1>
+            <p class="banner-text">Пройдено 18 из 75 задач • Набрано 42 балла БРС • Решайте задачи и получайте оценку от преподавателя.</p>
+            <button class="btn-primary">Продолжить: Скользящее окно</button>
+        </div>
+
+        <!-- Раздел 01 -->
+        <div class="card">
+            <button class="accordion-header">
+                <h2 class="accordion-title">01 Строки и массивы</h2>
+                <svg class="icon-rotate rotated" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="accordion-body">
+                <div class="task-row">
+                    <div class="task-info">
+                        <span class="badge badge-success">✓ Зачтено</span>
+                        <span class="task-name">Словарь частот слов</span>
+                    </div>
+                    <div class="task-actions">
+                        <span class="text-muted" style="font-size:0.75rem; color:#94a3b8;">Python</span>
+                        <button class="btn-link btn-link-muted">Смотреть код</button>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <div class="task-info">
+                        <span class="badge badge-warning">⏱️ Проверка</span>
+                        <span class="task-name">Самая длинная подстрока</span>
+                    </div>
+                    <div class="task-actions">
+                        <span class="text-muted" style="font-size:0.75rem; color:#94a3b8;">Python</span>
+                        <button class="btn-link btn-disabled" disabled>Просмотр</button>
+                    </div>
+                </div>
+                <div class="task-row error">
+                    <div class="task-info">
+                        <span class="badge badge-danger">! Замечания</span>
+                        <span class="task-name error-text">Уникальные элементы массива</span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn-link btn-link-danger">Исправить →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Раздел 02 -->
+        <div class="card">
+            <button class="accordion-header">
+                <h2 class="accordion-title">02 Два указателя</h2>
+                <svg class="icon-rotate rotated" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="accordion-body">
+                <div class="task-row">
+                    <div class="task-info">
+                        <span class="badge badge-success">✓ Зачтено</span>
+                        <span class="task-name">Перемещение нулей</span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn-link btn-link-muted">Смотреть код</button>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <div class="task-info">
+                        <span class="badge badge-neutral">Не начато</span>
+                        <span class="task-name">Максимальная площадь</span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn-link btn-link-action">Решить →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Раздел 03 (Свернутый) -->
+        <div class="card">
+            <button class="accordion-header">
+                <h2 class="accordion-title">03 Скользящее окно</h2>
+                <svg class="icon-rotate" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="accordion-body hidden">
+                <div class="task-row">
+                    <div class="task-info">
+                        <span class="badge badge-neutral">Не начато</span>
+                        <span class="task-name">Максимальное среднее</span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn-link btn-link-action">Решить →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Правая колонка: Виджеты -->
+    <div class="content-col">
+        <div class="widget-card">
+            <h3 class="widget-title">Ваш прогресс</h3>
+            <div class="progress-number">18 <span class="progress-total">/ 75</span></div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: 24%"></div>
+            </div>
+            <div class="stat-list">
+                <div class="stat-item"><span class="stat-label">Зачтено</span><span class="stat-val-success">18</span></div>
+                <div class="stat-item"><span class="stat-label">На проверке</span><span class="stat-val-warning">3</span></div>
+                <div class="stat-item"><span class="stat-label">Осталось</span><span class="stat-val-neutral">54</span></div>
+            </div>
+        </div>
+
+        <div class="widget-card">
+            <h3 class="widget-title">Ответы преподавателя</h3>
+            <div class="feedback-item">
+                <div class="feedback-author">
+                    <div class="author-avatar">ДИ</div>
+                    <div class="author-info">Дмитрий Игоревич<br><span class="author-time">2 часа назад</span></div>
+                </div>
+                <p class="feedback-task">Уникальные элементы массива</p>
+                <p class="feedback-text">«Обрати внимание на ...»</p>
+            </div>
+            <button class="btn-outline">Перейти к замечаниям</button>
+        </div>
+    </div>
+</main>
+
+    <!-- Скрипт для работы кнопок-аккордеонов -->
+    <script>
+        document.querySelectorAll('.accordion-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Находим контент сразу под нажатой кнопкой
+                const content = button.nextElementSibling;
+                // Находим иконку стрелочки внутри кнопки
+                const icon = button.querySelector('.icon-rotate');
+
+                // Переключаем видимость (класс hidden из Tailwind)
+                content.classList.toggle('hidden');
+                // Переворачиваем стрелочку
+                icon.classList.toggle('rotate-180');
+            });
+        });
+    </script>
+</body>
+</html>

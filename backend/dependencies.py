@@ -50,4 +50,3 @@ def check_teacher_role(data: CurrentUser = Depends(get_current_user)):
     if data.role != "TEACHER":
         raise HTTPException(status_code=403, detail="Доступ запрещён. Требуются права преподавателя.")
     return data
-
