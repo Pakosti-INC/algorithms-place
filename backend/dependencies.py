@@ -14,7 +14,7 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 def get_db():
     db = SessionLocal()
@@ -26,9 +26,9 @@ def get_db():
 def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorigth=ALGORITHM)
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("sub")
-        group_id: int | None = payload.get("group")
+        group_id: int | None = payload.get("group_id")
         role: str = payload.get("role")
 
         if user_id is None or role is None:
@@ -50,4 +50,3 @@ def check_teacher_role(data: CurrentUser = Depends(get_current_user)):
     if data.role != "TEACHER":
         raise HTTPException(status_code=403, detail="Доступ запрещён. Требуются права преподавателя.")
     return data
-
