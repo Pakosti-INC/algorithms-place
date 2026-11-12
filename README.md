@@ -10,7 +10,7 @@
 > python -m backend.main
 
 ## запуск редиса и селери в докере
-> docker run -d -p 6379:6379 --name redis_broker redis:alpine
+> docker compose up -d
 > 
 > (В консоль из папки cd backend) celery -A backend.worker.celery_app worker --loglevel=info --pool=solo
 
