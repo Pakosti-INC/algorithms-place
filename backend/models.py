@@ -34,7 +34,6 @@ class User(Base):
     middle_name: Mapped[Optional[str]] = mapped_column(String(30), nullable=True)
     last_name: Mapped[str] = mapped_column(String(30))
     role: Mapped[UsersRole] = mapped_column(default=UsersRole.STUDENT)
-    #TODO Не забыть про добавление соли к хэшу!
     password_hash: Mapped[str] = mapped_column(Text)
     group_id: Mapped[int] = mapped_column(ForeignKey("groups.id"), nullable=True)
 
