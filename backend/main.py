@@ -8,9 +8,18 @@ from sqlalchemy import select, exists
 from backend.security import get_password_hash, verify_password, create_access_token
 from fastapi.security import OAuth2PasswordRequestForm
 from backend.worker import process_submission_dummy
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Разрешает запросы отовсюду
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def status_check():
