@@ -169,7 +169,7 @@
                 <div class="w-12 bg-white flex flex-col items-end py-4 pr-3 text-slate-300 select-none border-r border-slate-100">
                     <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div>
                 </div>
-                <div class="flex-1 py-4 pl-4 overflow-x-auto text-[#003366] whitespace-pre outline-none" contenteditable="true" spellcheck="false">import sys
+                <div id="code-editor" class="flex-1 py-4 pl-4 overflow-x-auto text-[#003366] whitespace-pre outline-none" contenteditable="true" spellcheck="false">import sys
 
 def solve():
     n, m = map(int, input().split())
@@ -192,11 +192,11 @@ if __name__ == "__main__":
             <div class="border-t border-slate-200 p-4 flex-shrink-0 bg-white">
                 <button class="w-full bg-[#F26522] hover:bg-orange-600 active:bg-orange-700 text-white font-bold py-3 px-4 rounded-lg flex justify-center items-center gap-2 transition shadow-sm">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                    Отправить на проверку
+                    Отправить на проверку 
+                    <button id="submit-btn" class="w-full bg-[#F26522] hover:bg-orange-600 ..."></button>
                 </button>
             </div>
         </section>
-
     </main>
 
     <!-- СКРИПТ АНИМАЦИИ ПАНЕЛЕЙ -->
@@ -258,5 +258,6 @@ if __name__ == "__main__":
             }
         });
     </script>
+<script src="js/index.js"></script>
 </body>
 </html>

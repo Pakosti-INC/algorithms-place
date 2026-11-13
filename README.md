@@ -1,7 +1,7 @@
 # algorithms-place
 ## создание venv
 > py -m venv .venv 
-> venv\Scripts\activate
+> .venv\Scripts\activate
 
 ## установка зависимостей  
 > pip install -r requirements.txt
