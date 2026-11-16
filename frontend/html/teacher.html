@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Алгоритмы / Кабинет преподавателя</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/teacher.css">
+</head>
+<body class="teacher-page">
+
+    <!-- ШАПКА -->
+    <header class="topbar">
+        <div class="topbar-brand">
+            <img src="../static/img/869395.png" alt="Логотип УрФУ" class="topbar-logo">
+            <div class="topbar-title">Алгоритмы / Преподаватель</div>
+        </div>
+
+        <nav class="topbar-nav">
+            <button type="button" class="nav-tab active" data-tab="problems">Банк задач</button>
+            <button type="button" class="nav-tab" data-tab="assign">Назначение группам</button>
+            <button type="button" class="nav-tab" data-tab="reviews">Проверка решений</button>
+        </nav>
+
+        <div class="topbar-actions">
+            <div class="user-profile">
+                <div class="user-avatar">ДИ</div>
+                <div class="user-name" id="teacher-name">Преподаватель</div>
+            </div>
+            <button id="logout-btn" class="btn-logout">Выйти</button>
+        </div>
+    </header>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="teacher-main">
+
+        <!-- ВЕРХНЯЯ ПАНЕЛЬ СТАТИСТИКИ -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-label">Всего задач в курсе</div>
+                <div class="stat-card-value" id="stat-problems">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">Активных групп</div>
+                <div class="stat-card-value" id="stat-groups">1</div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 1: БАНК ЗАДАЧ + СОЗДАНИЕ ЗАДАЧИ -->
+        <section id="tab-problems" class="tab-panel active">
+            <div class="two-col-grid">
+                <!-- Форма создания задачи (POST /problems/create) -->
+                <div class="card card-padded">
+                    <h2 class="card-title">Новая задача</h2>
+                    <p class="card-subtitle">Добавление задачи в базу данных курса</p>
+
+                    <form id="create-problem-form" class="teacher-form">
+                        <div class="form-group">
+                            <label for="problem-title" class="form-label">Название задачи</label>
+                            <input id="problem-title" type="text" class="form-input" required placeholder="Например: Бинарный поиск">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="problem-difficulty" class="form-label">Сложность</label>
+                                <select id="problem-difficulty" class="form-input">
+                                    <option value="EASY">EASY (Лёгкая)</option>
+                                    <option value="MEDIUM">MEDIUM (Средняя)</option>
+                                    <option value="HARD">HARD (Сложная)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="problem-topic-id" class="form-label">ID темы </label>
+                                <input id="problem-topic-id" type="number" class="form-input" value="1" min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="problem-description" class="form-label">Условие, формат ввода и вывода</label>
+                            <textarea id="problem-description" class="form-textarea" rows="6" required placeholder="Опишите условие задачи, ограничения и примеры..."></textarea>
+                        </div>
+
+                        <div id="create-problem-msg" class="form-msg hidden"></div>
+
+                        <button type="submit" class="btn-primary">Создать задачу</button>
+                    </form>
+                </div>
+
+                <!-- Список существующих задач (GET /problems) -->
+                <div class="card card-padded">
+                    <div class="card-header-row">
+                        <div>
+                            <h2 class="card-title">Задачи группы</h2>
+                            <p class="card-subtitle">Текущий список задач, привязанных к группе</p>
+                        </div>
+                        <button type="button" id="refresh-problems-btn" class="btn-secondary">Обновить</button>
+                    </div>
+
+                    <div id="teacher-problems-list" class="items-list">
+                        <div class="empty-state">Загрузка списка задач...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 2: НАЗНАЧЕНИЕ ЗАДАЧИ ГРУППЕ (POST /problems/link) -->
+        <section id="tab-assign" class="tab-panel hidden">
+            <div class="single-col-wrap">
+                <div class="card card-padded">
+                    <h2 class="card-title">Назначить задачу учебной группе</h2>
+                    <p class="card-subtitle">Привязка задачи по ID к группе студентов и установка дедлайна</p>
+
+                    <form id="link-problem-form" class="teacher-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="link-group-id" class="form-label">ID группы (group_id)</label>
+                                <input id="link-group-id" type="number" class="form-input" value="1" min="1" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="link-problem-id" class="form-label">ID задачи (problem_id)</label>
+                                <input id="link-problem-id" type="number" class="form-input" value="1" min="1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="link-deadline" class="form-label">Дедлайн сдачи (необязательно)</label>
+                            <input id="link-deadline" type="datetime-local" class="form-input">
+                        </div>
+
+                        <div id="link-problem-msg" class="form-msg hidden"></div>
+
+                        <button type="submit" class="btn-primary">Назначить задачу группе</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ВКЛАДКА 3: ПРОВЕРКА РЕШЕНИЙ И РЕВЬЮ -->
+        <section id="tab-reviews" class="tab-panel hidden">
+            <div class="two-col-grid">
+                <!-- Список посылок -->
+                <div class="card card-padded">
+                    <div class="card-header-row">
+                        <div>
+                            <h2 class="card-title">Посылки студентов</h2>
+                            <p class="card-subtitle">Выберите решение для просмотра кода и комментария</p>
+                        </div>
+                        <div class="lookup-box">
+                            <input id="lookup-sub-id" type="number" class="form-input input-sm" placeholder="ID посылки" min="1">
+                            <button type="button" id="lookup-sub-btn" class="btn-secondary">Найти</button>
+                        </div>
+                    </div>
+
+                    <div id="submissions-list" class="items-list">
+                        <div class="empty-state">Загрузка посылок...</div>
+                    </div>
+                </div>
+
+                <!-- Окно ревью выбранной посылки -->
+                <div class="card card-padded">
+                    <h2 class="card-title" id="review-sub-title">Просмотр решения</h2>
+                    <p class="card-subtitle" id="review-sub-meta">Выберите посылку слева или найдите по ID</p>
+
+                    <div class="code-preview-box">
+                        <div class="code-preview-header">
+                            <span>main.py</span>
+                            <span id="review-sub-status" class="badge badge-neutral">—</span>
+                        </div>
+                        <pre id="review-code-view" class="code-preview-content"># Код студента появится здесь...</pre>
+                    </div>
+
+                    <form id="review-form" class="teacher-form">
+                        <div class="form-group">
+                            <label for="review-comment" class="form-label">Комментарий преподавателя (ревью)</label>
+                            <textarea id="review-comment" class="form-textarea" rows="3" placeholder="Напишите замечания по алгоритмической сложности или стилю кода..."></textarea>
+                        </div>
+
+                        <div id="review-msg" class="form-msg hidden"></div>
+
+                        <div class="btn-group-row">
+                            <button type="button" id="btn-accept-review" class="btn-accept">✓ Зачесть решение</button>
+                            <button type="button" id="btn-reject-review" class="btn-reject">✕ На доработку</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="../js/teacher.js"></script>
+</body>
+</html>
