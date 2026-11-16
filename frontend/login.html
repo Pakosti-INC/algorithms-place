@@ -29,9 +29,9 @@
 
                 <!-- Имя пользователя -->
                 <div>
-                    <label for="username" class="block text-sm font-medium text-slate-700">Имя пользователя</label>
+                    <label for="email" class="block text-sm font-medium text-slate-700">Почта пользователя</label>
                     <div class="mt-1">
-                        <input id="username" name="username" type="text" required placeholder="Например: karaev-sr"
+                        <input id="email" name="email" type="email" required placeholder="Например: user@example.com"
                             class="appearance-none block w-full px-4 py-3 border border-slate-200 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors sm:text-sm">
                     </div>
                 </div>
@@ -44,23 +44,9 @@
                             class="appearance-none block w-full px-4 py-3 border border-slate-200 rounded-lg shadow-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors sm:text-sm">
                     </div>
                 </div>
-
-                <!-- Выбор домена -->
-                <div>
-                    <label for="domain" class="block text-sm font-medium text-slate-700">Домен</label>
-                    <div class="mt-1 relative">
-                        <select id="domain" name="domain"
-                            class="appearance-none block w-full px-4 py-3 border border-slate-200 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-colors sm:text-sm bg-white cursor-pointer">
-                            <option>Я студент / школьник</option>
-                            <option>Я преподаватель / сотрудник</option>
-                        </select>
-                        <!-- Кастомная стрелочка для селекта -->
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </div>
-                    </div>
-                </div>
-
+                
+                <p id="error-msg" class="text-sm text-red-600 text-center hidden"></p>
+                
                 <!-- Кнопка Вход -->
                 <div>
                     <button type="submit"
@@ -101,6 +87,6 @@
             window.location.href = 'index.html';
         });
     </script>
-
+    <script src="js/login.js"></script>
 </body>
 </html>

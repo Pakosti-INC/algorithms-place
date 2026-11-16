@@ -1,0 +1,13 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F1F5F9;
+}
+
+/* Плавный поворот стрелочки в аккордеоне */
+.icon-rotate {
+    transition: transform 0.2s ease-in-out;
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
