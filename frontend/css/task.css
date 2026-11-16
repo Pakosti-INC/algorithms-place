@@ -1,0 +1,661 @@
+/* =========================================================
+   ПОЛНЫЕ СТИЛИ ДЛЯ task.html (включая переменные и классы из task.js)
+   ========================================================= */
+:root {
+    --urfu-blue: #003366;
+    --urfu-orange: #F26522;
+    --urfu-orange-hover: #ea580c;
+    --urfu-orange-active: #c2410c;
+    --urfu-orange-soft: rgba(255, 247, 237, 0.5);
+    --bg-page: #f8fafc;
+    --bg-dashboard: #f1f5f9;
+    --text-main: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    --border-color: #e2e8f0;
+    --border-soft: #f1f5f9;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body.ide-page {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #1e293b;
+    background-color: #ffffff;
+    overflow: hidden;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Скроллбар */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 20px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
+}
+
+/* Шапка IDE */
+.ide-header {
+    height: 4rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    flex-shrink: 0;
+    background-color: #ffffff;
+    z-index: 20;
+    box-shadow: var(--shadow-sm);
+}
+
+.ide-logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--urfu-blue);
+    letter-spacing: -0.025em;
+    text-decoration: none;
+}
+
+.ide-header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.ide-course-name {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.ide-notify-btn {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.ide-notify-btn:hover {
+    color: var(--urfu-blue);
+}
+
+.ide-notify-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: block;
+}
+
+.ide-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--urfu-blue);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.ide-avatar:hover {
+    opacity: 0.9;
+}
+
+/* Рабочая область из 3 колонок */
+.ide-workspace {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    background-color: var(--bg-page);
+}
+
+/* Кнопка сворачивания панели */
+.panel-toggle-btn {
+    position: absolute;
+    top: 0.875rem;
+    right: 0.875rem;
+    z-index: 20;
+    padding: 0.375rem;
+    background-color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.panel-toggle-btn:hover {
+    background-color: var(--bg-dashboard);
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+.panel-toggle-btn svg {
+    width: 1rem;
+    height: 1rem;
+    display: block;
+    transition: transform 0.3s;
+}
+
+.panel-toggle-btn.collapsed svg {
+    transform: rotate(180deg);
+}
+
+/* КОЛОНКА 1: Левая панель (список задач) */
+.panel-left {
+    width: 320px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border-color);
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.02);
+    z-index: 10;
+    transition: width 0.3s ease-in-out;
+}
+
+.panel-left.is-collapsed {
+    width: 48px;
+}
+
+.panel-left-inner {
+    width: 320px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.3s;
+}
+
+.panel-left.is-collapsed .panel-left-inner {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.progress-header {
+    padding: 1.5rem;
+    padding-right: 3.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.progress-header-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--urfu-blue);
+    margin-bottom: 0.25rem;
+}
+
+.progress-header-count {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--urfu-blue);
+    margin-bottom: 0.75rem;
+}
+
+.progress-header-count span {
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+.mini-progress-track {
+    width: 100%;
+    background-color: var(--bg-dashboard);
+    border-radius: 9999px;
+    height: 0.375rem;
+    margin-bottom: 0.5rem;
+}
+
+.mini-progress-fill {
+    background-color: #cbd5e1;
+    height: 0.375rem;
+    border-radius: 9999px;
+}
+
+.progress-header-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.problems-scroll {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.problems-list {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Элемент задачи в левом списке (как на скриншоте) */
+.problem-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background-color: #ffffff;
+    border: none;
+    border-bottom: 1px solid var(--border-soft);
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s;
+    font-family: inherit;
+}
+
+.problem-item:hover {
+    background-color: var(--bg-page);
+}
+
+.problem-item.active {
+    background-color: var(--urfu-orange-soft);
+    border-bottom-color: #ffedd5;
+}
+
+.problem-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: var(--urfu-orange);
+}
+
+.problem-item-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.problem-circle {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2px solid #cbd5e1;
+    flex-shrink: 0;
+}
+
+.problem-status-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+}
+
+.status-icon-ok {
+    color: #22c55e;
+}
+
+.status-icon-err {
+    color: #ef4444;
+}
+
+.problem-item-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.problem-item.active .problem-item-name {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.problem-item-diff {
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-light);
+}
+
+/* =========================================================
+   УТИЛИТЫ ДЛЯ ДИНАМИЧЕСКИХ КНОПОК ИЗ task.js
+   (сохраняют внешний вид строчки "1. Сортировка пузырьком EASY")
+   ========================================================= */
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-3 { gap: 0.75rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.border-b { border-bottom-width: 1px; border-bottom-style: solid; }
+.border-slate-100 { border-color: #f1f5f9; }
+.transition { transition: background-color 0.2s, color 0.2s; }
+.text-left { text-align: left; }
+.w-full { width: 100%; }
+.w-4 { width: 1rem; }
+.h-4 { height: 1rem; }
+.rounded-full { border-radius: 9999px; }
+.border-2 { border-width: 2px; border-style: solid; }
+.border-slate-300 { border-color: #cbd5e1; }
+.flex-shrink-0 { flex-shrink: 0; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.font-medium { font-weight: 500; }
+.text-slate-700 { color: #334155; }
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+.text-slate-400 { color: #94a3b8; }
+.hover\:bg-slate-50:hover { background-color: #f8fafc; }
+
+#problems-list > button {
+    background-color: #ffffff;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* КОЛОНКА 2: Центральная панель (условие задачи) */
+.panel-middle {
+    flex: 1;
+    min-width: 0;
+    border-right: 1px solid var(--border-color);
+    background-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.panel-middle.is-collapsed {
+    flex: none;
+    width: 48px;
+}
+
+.panel-middle-inner {
+    min-width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.3s;
+}
+
+.panel-middle.is-collapsed .panel-middle-inner {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tabs-bar {
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    padding-right: 3.5rem;
+    border-bottom: 1px solid var(--border-color);
+    height: 56px;
+    flex-shrink: 0;
+}
+
+.tab-btn {
+    height: 100%;
+    padding: 0 0.5rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    margin-right: 1.5rem;
+    transition: color 0.2s;
+}
+
+.tab-btn:hover {
+    color: #475569;
+}
+
+.tab-btn.active {
+    font-weight: 700;
+    color: var(--urfu-orange);
+    border-bottom-color: var(--urfu-orange);
+}
+
+.problem-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.problem-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--urfu-orange);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.problem-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--urfu-blue);
+    margin-bottom: 2rem;
+}
+
+.limits-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.limit-card {
+    background-color: var(--bg-page);
+    border: 1px solid var(--border-soft);
+    border-radius: 0.75rem;
+    padding: 1rem;
+}
+
+.limit-label {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    margin-bottom: 0.25rem;
+}
+
+.limit-value {
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: #1e293b;
+}
+
+.problem-description {
+    font-size: 0.875rem;
+    color: #475569;
+    line-height: 1.625;
+    margin-bottom: 2rem;
+}
+
+.problem-description p {
+    margin-bottom: 1rem;
+}
+
+.section-heading {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--urfu-blue);
+    margin-bottom: 0.75rem;
+}
+
+.section-text {
+    font-size: 0.875rem;
+    color: #475569;
+    line-height: 1.625;
+    margin-bottom: 2rem;
+}
+
+.example-box {
+    background-color: var(--bg-page);
+    border: 1px solid var(--border-soft);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.example-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.example-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+    color: #1e293b;
+}
+
+/* КОЛОНКА 3: Правая панель (редактор кода) */
+.panel-right {
+    width: 540px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.02);
+    z-index: 10;
+    transition: all 0.3s ease-in-out;
+}
+
+@media (min-width: 1280px) {
+    .panel-right {
+        width: 600px;
+    }
+}
+
+.panel-right.is-expanded {
+    flex: 1;
+    width: auto;
+}
+
+.editor-toolbar {
+    height: 56px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    flex-shrink: 0;
+}
+
+.lang-select {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background-color: var(--bg-page);
+    border: 1px solid var(--border-color);
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.lang-select:hover {
+    background-color: var(--bg-dashboard);
+}
+
+.save-status {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.editor-filename {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border-soft);
+    background-color: rgba(248, 250, 252, 0.5);
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--urfu-blue);
+    font-weight: 600;
+}
+
+.editor-container {
+    flex: 1;
+    display: flex;
+    overflow-y: auto;
+    background-color: #ffffff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+}
+
+.line-numbers {
+    width: 3rem;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 1rem 0.75rem 1rem 0;
+    color: #cbd5e1;
+    user-select: none;
+    border-right: 1px solid var(--border-soft);
+}
+
+.code-area {
+    flex: 1;
+    padding: 1rem 0 1rem 1rem;
+    overflow-x: auto;
+    color: var(--urfu-blue);
+    white-space: pre;
+    outline: none;
+    line-height: 1.5;
+}
+
+.editor-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 1rem;
+    flex-shrink: 0;
+    background-color: #ffffff;
+}
+
+.btn-run {
+    width: 100%;
+    background-color: var(--urfu-orange);
+    color: #ffffff;
+    border: none;
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.2s;
+}
+
+.btn-run:hover {
+    background-color: var(--urfu-orange-hover);
+}
+
+.btn-run:active {
+    background-color: var(--urfu-orange-active);
+}
+
+.btn-run svg {
+    width: 1rem;
+    height: 1rem;
+}
