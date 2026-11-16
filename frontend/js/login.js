@@ -11,13 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Внутри login.js после получения data.access_token:
-localStorage.setItem('token', data.access_token);
 
-const payloadBase64 = data.access_token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-const payload = JSON.parse(atob(payloadBase64));
+// localStorage.setItem('token', data.access_token);
 
-if (payload.role === 'TEACHER') {
-    window.location.href = 'teacher.html';
-} else {
-    window.location.href = 'index.html';
-}
+// const payloadBase64 = data.access_token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+// const payload = JSON.parse(atob(payloadBase64));
+
+// if (payload.role === 'TEACHER') {
+//     window.location.href = 'teacher.html';
+// } else {
+//     window.location.href = 'index.html';
+// }
